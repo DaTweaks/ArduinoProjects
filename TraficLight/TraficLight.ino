@@ -42,11 +42,12 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-  // because interrupts don't allow 
+  // because interrupts don't allow Delays i have to do this solution
   if(button){
     buttonPressed();
     button = false;
   }
+  Delay(100); // Hopefully this will account for debounce delay.
 }
 
 void buttonInterrupt(){
@@ -54,7 +55,6 @@ void buttonInterrupt(){
 }
 
 void buttonPressed(){
-  delay(1000);
   Serial.print("LOL! ");
   Serial.print(i++);
   Serial.println();
